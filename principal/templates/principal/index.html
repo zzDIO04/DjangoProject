@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizKids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Nunito', Arial, sans-serif; background: #f6f9fc; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 80px; background: #2d2d2d; }
+        .navbar .logo { color: #fff; font-size: 1.6rem; font-weight: 700; letter-spacing: 1px; text-decoration: none; }
+        .navbar .user-info { color: #fff; font-size: 1.1rem; margin-right: 18px; font-weight: 600; }
+        .navbar .login-link, .navbar .logout-link { color: #bdbdbd; font-size: 1.1rem; text-decoration: none; transition: color 0.2s, background 0.2s; padding: 8px 22px; border-radius: 8px; font-weight: 700; border: none; background: #393939; margin-left: 8px; cursor: pointer; }
+        .navbar .login-link:hover, .navbar .logout-link:hover { color: #fff; background: #0070d1; }
+        .hero { background: linear-gradient(120deg, #008cff 0%, #0070d1 100%); color: #fff; text-align: center; padding: 80px 20px 60px 20px; }
+        .hero h1 { font-size: 3.2rem; font-weight: 700; margin-bottom: 18px; }
+        .hero p { font-size: 1.3rem; font-weight: 400; margin-bottom: 36px; }
+        .portais { display: flex; justify-content: center; gap: 48px; margin-top: -60px; flex-wrap: wrap; }
+        .portal-card { background: #fff; border-radius: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.09); padding: 48px 38px; width: 370px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .portal-card h2 { font-size: 2.1rem; color: #0070d1; margin-bottom: 18px; font-weight: 700; }
+        .portal-card p { font-size: 1.1rem; color: #444; margin-bottom: 28px; }
+        .portal-btn { background: #0070d1; color: #fff; border: none; border-radius: 10px; padding: 16px 40px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+        .portal-btn:hover { background: #0056a3; }
+        @media (max-width: 1100px) {
+            .portais { flex-direction: column; align-items: center; gap: 32px; }
+            .portal-card { width: 90%; }
+        }
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .navbar { padding: 16px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span class="logo">QuizKids</span>
+        <div>
+            {% if user.is_authenticated %}
+                <span class="user-info">Olá, {{ user.username }}!</span>
+                <a href="{% url 'logout' %}" class="logout-link">Sair</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="login-link">Login</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero">
+        <h1>Bem-vindo ao QuizKids</h1>
+        <p>Escolha seu portal de acesso para começar a usar o sistema:</p>
+    </div>
+    <div class="portais">
+        <div class="portal-card">
+            <h2>Portal do Professor</h2>
+            <p>Cadastre quizzes, perguntas e respostas, gerencie alunos e acompanhe o desempenho da turma.</p>
+            <a href="{% url 'painel_professor' %}" class="portal-btn">Acessar Painel do Professor</a>
+        </div>
+        <div class="portal-card">
+            <h2>Portal do Aluno</h2>
+            <p>Veja os quizzes disponíveis, jogue, aprenda e acompanhe seu desempenho em cada matéria.</p>
+            <a href="{% url 'quizzes_aluno' %}" class="portal-btn">Acessar Quizzes</a>
+        </div>
+    </div>
+</body>
+</html> 

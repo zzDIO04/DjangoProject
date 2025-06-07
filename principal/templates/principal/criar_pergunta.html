@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Pergunta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f6f9fc; font-family: 'Nunito', Arial, sans-serif; margin: 0; }
+        .container { max-width: 500px; margin: 60px auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); padding: 40px 32px; }
+        h2 { text-align: center; color: #0070d1; margin-bottom: 32px; font-size: 2rem; font-weight: 700; }
+        .form-group { margin-bottom: 24px; }
+        label { display: block; margin-bottom: 8px; color: #222; font-weight: 600; }
+        textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d0d0d0; font-size: 1.1rem; }
+        .btn { width: 100%; background: #0070d1; color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: #0056a3; }
+        .voltar { display: block; text-align: center; margin-top: 24px; color: #0070d1; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Adicionar Pergunta ao Quiz: {{ quiz.titulo }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="texto">Pergunta</label>
+                <textarea id="texto" name="texto" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn">Salvar Pergunta</button>
+        </form>
+        <a href="{% url 'painel_professor' %}" class="voltar">Voltar ao Painel</a>
+    </div>
+</body>
+</html> 

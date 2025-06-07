@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Notas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f6f9fc; font-family: 'Nunito', Arial, sans-serif; margin: 0; }
+        .login-container { max-width: 400px; margin: 80px auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); padding: 40px 32px; }
+        h2 { text-align: center; color: #0070d1; margin-bottom: 32px; font-size: 2.2rem; font-weight: 700; }
+        .form-group { margin-bottom: 24px; }
+        label { display: block; margin-bottom: 8px; color: #222; font-weight: 600; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d0d0d0; font-size: 1.1rem; }
+        .btn-login { width: 100%; background: #0070d1; color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-login:hover { background: #0056a3; }
+        .mensagem-erro { color: #d32f2f; text-align: center; margin-bottom: 16px; font-weight: 600; }
+        .voltar { display: block; text-align: center; margin-top: 24px; color: #0070d1; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if mensagem %}
+            <div class="mensagem-erro">{{ mensagem }}</div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+        <a href="/" class="voltar">Voltar para a página inicial</a>
+    </div>
+</body>
+</html> 

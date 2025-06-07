@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.titulo }} - Jogar Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f6f9fc; font-family: 'Nunito', Arial, sans-serif; margin: 0; }
+        .container { max-width: 600px; margin: 60px auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); padding: 40px 32px; }
+        h2 { text-align: center; color: #0070d1; margin-bottom: 24px; font-size: 2rem; font-weight: 700; }
+        .pergunta { font-size: 1.3rem; color: #232b3b; margin-bottom: 28px; font-weight: 600; }
+        .respostas { display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+        .resposta-btn { background: #f3eaff; color: #222; border: none; border-radius: 8px; padding: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s, color 0.2s; }
+        .resposta-btn:hover { background: #a385f7; color: #fff; }
+        .progresso { text-align: right; color: #888; font-size: 1rem; margin-bottom: 16px; }
+        .feedback { text-align: center; font-size: 1.2rem; font-weight: 700; margin-bottom: 18px; }
+        .feedback.correto { color: #2ecc71; }
+        .feedback.incorreto { color: #e74c3c; }
+        .final { text-align: center; }
+        .pontuacao { font-size: 2.2rem; color: #0070d1; font-weight: 700; margin-bottom: 12px; }
+        .voltar { display: block; text-align: center; margin-top: 32px; color: #0070d1; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ quiz.titulo }}</h2>
+        {% if mensagem %}
+            <div class="feedback incorreto">{{ mensagem }}</div>
+            <a href="/quizzes/" class="voltar">Voltar para Quizzes</a>
+        {% elif finalizado %}
+            <div class="final">
+                <div class="pontuacao">Pontuação: {{ pontuacao }}%</div>
+                <div>Você acertou {{ acertos }} de {{ total }} perguntas.</div>
+                <a href="/quizzes/" class="voltar">Voltar para Quizzes</a>
+            </div>
+        {% else %}
+            <div class="progresso">Pergunta {{ progresso }} de {{ total }}</div>
+            <div class="pergunta">{{ pergunta.texto }}</div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="respostas">
+                    {% for resposta in respostas %}
+                        <label>
+                            <input type="radio" name="resposta" value="{{ resposta.id }}" required>
+                            <span>{{ resposta.texto }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="resposta-btn">Responder</button>
+            </form>
+            {% if feedback %}
+                <div class="feedback {% if feedback == 'Correto!' %}correto{% else %}incorreto{% endif %}">{{ feedback }}</div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html> 

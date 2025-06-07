@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;400&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f6f9fc; font-family: 'Nunito', Arial, sans-serif; margin: 0; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 24px 48px; background: #fff; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.02); }
+        .logo { color: #a385f7; font-size: 2rem; font-weight: 700; letter-spacing: 1px; text-decoration: none; }
+        .painel-btn { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 8px 20px; font-size: 1rem; color: #222; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: box-shadow 0.2s; }
+        .painel-btn:hover { box-shadow: 0 2px 8px 0 rgba(163,133,247,0.15); }
+        .main { max-width: 1200px; margin: 0 auto; padding: 48px 16px 0 16px; }
+        .titulo { font-size: 2.5rem; font-weight: 700; color: #232b3b; margin-bottom: 32px; }
+        .resumo { display: flex; gap: 32px; margin-bottom: 40px; flex-wrap: wrap; }
+        .resumo-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px 0 rgba(163,133,247,0.08); padding: 32px 40px; flex: 1; min-width: 260px; display: flex; flex-direction: column; align-items: flex-start; }
+        .resumo-card .icon { margin-bottom: 10px; }
+        .resumo-card .label { font-size: 1.1rem; color: #5a6a85; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .resumo-card .valor { font-size: 2.5rem; font-weight: 700; }
+        .resumo-card.azul .valor { color: #4d90fe; }
+        .resumo-card.verde .valor { color: #2ecc71; }
+        .resumo-card.amarelo .valor { color: #ff9800; }
+        .tabela-box { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px 0 rgba(163,133,247,0.08); padding: 32px 24px; margin-bottom: 40px; }
+        .tabela-titulo { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+        .tabela-sub { color: #5a6a85; margin-bottom: 24px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 8px; text-align: left; }
+        th { color: #5a6a85; font-weight: 700; border-bottom: 2px solid #f0f0f0; }
+        tr:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
+        td { font-size: 1.05rem; }
+        @media (max-width: 900px) { .resumo { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">QuizKids</a>
+        <a href="/admin/" class="painel-btn">
+            <svg width="20" height="20" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg>
+            Painel do Professor
+        </a>
+    </nav>
+    <main class="main">
+        <div class="titulo">Painel do Professor</div>
+        <a href="{% url 'criar_quiz' %}" style="display:inline-block;margin-bottom:32px;background:#0070d1;color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;text-decoration:none;">+ Criar Novo Quiz</a>
+        <div style="margin-bottom:40px;">
+            <h3 style="color:#232b3b;font-size:1.3rem;font-weight:700;margin-bottom:16px;">Seus Quizzes</h3>
+            {% if quizzes %}
+                <ul style="list-style:none;padding:0;">
+                    {% for quiz in quizzes %}
+                        <li style="background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:18px;padding:18px 24px;">
+                            <strong>{{ quiz.titulo }}</strong> ({{ quiz.disciplina.nome }})<br>
+                            <span style="color:#888;font-size:0.95rem;">{{ quiz.descricao }}</span><br>
+                            <a href="{% url 'criar_pergunta' quiz.id %}" style="color:#0070d1;font-weight:600;margin-right:18px;">+ Adicionar Pergunta</a>
+                            <a href="{% url 'desempenho_quiz' quiz.id %}" style="color:#2ecc71;font-weight:600;">Ver Desempenho dos Alunos</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div style="color:#888;">Você ainda não criou nenhum quiz.</div>
+            {% endif %}
+        </div>
+        <div class="resumo">
+            <div class="resumo-card azul">
+                <div class="icon"><svg width="28" height="28" fill="none" stroke="#4d90fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="label">Alunos Ativos</div>
+                <div class="valor">{{ alunos_ativos }}</div>
+            </div>
+            <div class="resumo-card verde">
+                <div class="icon"><svg width="28" height="28" fill="none" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 21H3V3"/></svg></div>
+                <div class="label">Média Geral</div>
+                <div class="valor">{{ media_geral }}%</div>
+            </div>
+            <div class="resumo-card amarelo">
+                <div class="icon"><svg width="28" height="28" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+                <div class="label">Quizzes Completados</div>
+                <div class="valor">{{ quizzes_completados }}</div>
+            </div>
+        </div>
+        <div class="tabela-box">
+            <div class="tabela-titulo">Desempenho dos Alunos</div>
+            <div class="tabela-sub">Acompanhe as notas dos alunos por matéria</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        {% for materia in materias %}
+                            <th>{{ materia }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for aluno, materias_dict in desempenho.items %}
+                        <tr>
+                            <td>{{ aluno }}</td>
+                            {% for materia in materias %}
+                                <td>
+                                    {% with valor=materias_dict|dict_get:materia %}
+                                        {% if valor is not None %}
+                                            {{ valor }}%
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="{{ materias|length|add:'1' }}" style="text-align:center;color:#888;">Nenhum desempenho registrado ainda.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html> 
